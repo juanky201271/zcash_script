@@ -15,7 +15,10 @@ const std::string MINOR_CURRENCY_UNIT = "zatoshis";
 CFeeRate::CFeeRate(const CAmount& nFeePaid, size_t nSize)
 {
     if (nSize > 0) {
-        nSatoshisPerK = std::min(nFeePaid*1000/nSize, (uint64_t)INT64_MAX / MAX_BLOCK_SIZE);
+        nSatoshisPerK = std::min<CAmount>(
+            nFeePaid * 1000 / nSize,
+            static_cast<CAmount>((uint64_t)INT64_MAX / MAX_BLOCK_SIZE)
+        );
     } else {
         nSatoshisPerK = 0;
     }
